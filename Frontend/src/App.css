@@ -1,0 +1,189 @@
+/* === Global Reset === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+/* === Body Background === */
+body {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 50px;
+}
+
+/* === Container === */
+.container {
+  background: #fff;
+  max-width: 420px;
+  width: 100%;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  transition: 0.3s ease;
+}
+
+.container:hover {
+  transform: translateY(-4px);
+}
+
+/* === Heading === */
+.heading {
+  text-align: center;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 25px;
+  letter-spacing: 0.5px;
+}
+
+/* === Input and Buttons Section === */
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.main input {
+  padding: 12px 15px;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  width: 100%;
+  outline: none;
+  text-align: center;
+  font-size: 16px;
+  transition: 0.3s;
+}
+
+.main input:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 6px rgba(102, 126, 234, 0.5);
+}
+
+.main button {
+  padding: 12px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+  color: white;
+}
+
+.main button:first-of-type {
+  background: #667eea;
+}
+
+.main button:first-of-type:hover {
+  background: #5a67d8;
+}
+
+.main button:last-of-type {
+  background: #ef4444;
+}
+
+.main button:last-of-type:hover {
+  background: #dc2626;
+}
+
+/* === Todo List === */
+.list {
+  margin-top: 20px;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.list li {
+  background: #f9f9f9;
+  padding: 12px 15px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: 0.3s;
+  border: 1px solid #eee;
+  gap: 20px;
+}
+
+.list li:hover {
+  background: #f1f1f1;
+}
+
+.list span {
+  flex: 1;
+  font-size: 16px;
+  color: #333;
+  word-break: break-word;
+  white-space: pre-wrap;
+  max-width: 100%;
+}
+
+/* === Buttons inside list === */
+.btns {
+  display: flex;
+  gap: 8px;
+}
+
+.editButton {
+  background: #fbbf24;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.editButton:hover {
+  background: #f59e0b;
+}
+
+.deleteButton {
+  background: #ef4444;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.deleteButton:hover {
+  background: #dc2626;
+}
+
+.main button:last-of-type:hover {
+  background: #d00000;
+  transform: scale(1.05);
+}
+
+
+/* === Responsive Design === */
+@media (max-width: 480px) {
+  body {
+    padding: 20px;
+  }
+
+  .container {
+    padding: 20px;
+  }
+
+  .heading {
+    font-size: 1.5rem;
+  }
+
+  .main button {
+    font-size: 14px;
+    padding: 10px;
+    width: 100%;
+  }
+
+  .list span {
+    font-size: 14px;
+  }
+}
