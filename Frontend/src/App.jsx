@@ -3,27 +3,30 @@ import "./App.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+// ✅ Dynamically pick backend URL
+const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 function App() {
   const [input, setInputValue] = useState("");
   const [userTodo, setUserTodo] = useState([]);
 
- 
+  // === FETCH TODOS ===
   useEffect(() => {
-    fetch("http://localhost:5000/todos")
+    fetch(`${BASE_URL}/todos`)
       .then((res) => res.json())
       .then((data) => setUserTodo(data))
-      .catch((err) => toast.error("Error fetching todos" ,err));
+      .catch(() => toast.error("⚠️ Error fetching todos"));
   }, []);
 
-
+  // === ADD TODO ===
   async function addTodo() {
     if (input.trim() === "") {
-      toast.warn("Please enter a todo!");
+      toast.warn("✏️ Please enter a todo!");
       return;
     }
 
     try {
-      const res = await fetch("http://localhost:5000/todos", {
+      const res = await fetch(`${BASE_URL}/todos`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: input }),
@@ -32,74 +35,71 @@ function App() {
       const newTodo = await res.json();
       setUserTodo((prev) => [...prev, newTodo]);
       setInputValue("");
-      toast.success("Todo added successfully!");
-    } catch (error) {
-      toast.error("Error adding todo!",error);
+      toast.success("✅ Todo added successfully!");
+    } catch {
+      toast.error("❌ Error adding todo!");
     }
   }
 
-  
+  // === EDIT TODO ===
   async function edit(id) {
     const newText = prompt("Edit your todo:");
     if (!newText || newText.trim() === "") return;
 
     try {
-      const res = await fetch(`http://localhost:5000/todos/${id}`, {
+      const res = await fetch(`${BASE_URL}/todos/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: newText }),
       });
 
       const updatedTodo = await res.json();
-
       setUserTodo((prev) =>
         prev.map((todo) => (todo._id === id ? updatedTodo : todo))
       );
-
-      toast.info("Todo updated!");
-    } catch (error) {
-      toast.error("Error updating todo!", error);
+      toast.info("📝 Todo updated!");
+    } catch {
+      toast.error("❌ Error updating todo!");
     }
   }
 
-
+  // === DELETE SINGLE TODO ===
   async function remove(id) {
     try {
-      await fetch(`http://localhost:5000/todos/${id}`, { method: "DELETE" });
+      await fetch(`${BASE_URL}/todos/${id}`, { method: "DELETE" });
       setUserTodo((prev) => prev.filter((todo) => todo._id !== id));
-      toast.error("Todo deleted!");
-    } catch (error) {
-      toast.error("Error deleting todo!", error);
+      toast.error("🗑️ Todo deleted!");
+    } catch {
+      toast.error("❌ Error deleting todo!");
     }
   }
 
-
-async function removeAll() {
-  if (window.confirm("Are you sure you want to delete all todos?")) {
-    try {
-      const res = await fetch("http://localhost:5000/todos", {
-        method: "DELETE",
-      });
-
-      if (res.ok) {
-        setUserTodo([]);
-        toast.error("All todos deleted!");
-      } else {
-        toast.error("Failed to delete todos!");
+  // === DELETE ALL TODOS ===
+  async function removeAll() {
+    if (window.confirm("Are you sure you want to delete all todos?")) {
+      try {
+        const res = await fetch(`${BASE_URL}/todos`, { method: "DELETE" });
+        if (res.ok) {
+          setUserTodo([]);
+          toast.error("🗑️ All todos deleted!");
+        } else {
+          toast.error("❌ Failed to delete all todos!");
+        }
+      } catch {
+        toast.error("⚠️ Error deleting all todos!");
       }
-    } catch (error) {
-      toast.error("Error deleting all todos!",error);
+    } else {
+      toast.info("🚫 Delete cancelled");
     }
-  } else {
-    toast.info("Delete cancelled");
   }
-}
 
+  // === UI ===
   return (
     <>
       <div className="container">
         <div className="main">
           <h1 className="heading">Todo List</h1>
+
           <input
             onChange={(e) => setInputValue(e.target.value)}
             type="text"
@@ -135,7 +135,7 @@ async function removeAll() {
         </div>
       </div>
 
-      {/* Toast Container */}
+      {/* Toast Notifications */}
       <ToastContainer position="top-center" autoClose={2000} theme="colored" />
     </>
   );
